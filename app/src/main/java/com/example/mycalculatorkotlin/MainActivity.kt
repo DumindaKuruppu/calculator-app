@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         if (lastNumeric && !lastDecimalPoint) {
             textViewInput?.append(".")
             lastDecimalPoint = true
-            lastNumeric = false
+            lastNumeric = true
         }
     }
 
@@ -70,7 +70,43 @@ class MainActivity : AppCompatActivity() {
                         one = prefix + one
                     }
 
-                    textViewInput?.text = (one.toDouble() - two.toDouble()).toString()
+                    textViewInput?.text = removeZeroOnWholeNumbers((one.toDouble() - two.toDouble()).toString())
+
+                } else if (textViewValue.contains("+")) {
+
+                    val splitValue = textViewValue.split("+")
+                    var one = splitValue[0]
+                    var two = splitValue[1]
+
+                    if (prefix.isNotEmpty()) {
+                        one = prefix + one
+                    }
+
+                    textViewInput?.text = removeZeroOnWholeNumbers((one.toDouble() + two.toDouble()).toString())
+
+                } else if (textViewValue.contains("/")) {
+
+                    val splitValue = textViewValue.split("/")
+                    var one = splitValue[0]
+                    var two = splitValue[1]
+
+                    if (prefix.isNotEmpty()) {
+                        one = prefix + one
+                    }
+
+                    textViewInput?.text = removeZeroOnWholeNumbers((one.toDouble() / two.toDouble()).toString())
+
+                } else if (textViewValue.contains("*")) {
+
+                    val splitValue = textViewValue.split("*")
+                    var one = splitValue[0]
+                    var two = splitValue[1]
+
+                    if (prefix.isNotEmpty()) {
+                        one = prefix + one
+                    }
+
+                    textViewInput?.text = removeZeroOnWholeNumbers((one.toDouble() * two.toDouble()).toString())
                 }
 
 
@@ -78,6 +114,14 @@ class MainActivity : AppCompatActivity() {
                 textViewInput?.text = getString(R.string.syntax_error)
             }
         }
+    }
+
+    private fun removeZeroOnWholeNumbers(result: String): String {
+        var resultValue = result
+        if (result.contains(".0")) {
+            resultValue = resultValue.substring(0, resultValue.length - 2)
+        }
+            return resultValue
     }
 
     private fun isOperatorAdded(value: String): Boolean {
